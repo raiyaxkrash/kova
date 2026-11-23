@@ -162,6 +162,15 @@ function renderApps() {
 
           <div class="card-actions">
             ${primaryBtn}
+            ${
+              app.installed && !app.running && !isBusy
+                ? `<button class="btn-ghost small" data-action="launch-admin" data-id="${app.id}" title="Запустить от имени администратора">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M12 3l7 3v5.5c0 4.5-3 8.1-7 9.5-4-1.4-7-5-7-9.5V6l7-3z"/>
+                    </svg>
+                  </button>`
+                : ""
+            }
             <button class="btn-ghost small" data-action="details" data-id="${app.id}" title="Подробнее и настройки">
               <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
                 <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
@@ -247,6 +256,7 @@ function populateDrawer(id) {
   }
 
   document.getElementById("customPathInput").value = app.exePath || "";
+  document.getElementById("drawerLaunchAdminBtn").disabled = !app.installed;
   document.getElementById("drawerOpenFolderBtn").disabled = !app.exePath;
   document.getElementById("drawerUninstallBtn").hidden = !app.installed;
 }
@@ -347,10 +357,11 @@ async function handleAction(action, id) {
     });
     return;
   }
-  if (action === "launch") {
+  if (action === "launch" || action === "launch-admin") {
+    const asAdmin = action === "launch-admin";
     try {
-      await invoke("launch_app", { id });
-      toast(`${app.name} запущен`);
+      await invoke("launch_app", { id, asAdmin });
+      toast(asAdmin ? `${app.name} запущен от имени администратора` : `${app.name} запущен`);
       setTimeout(refreshLocalState, 600);
     } catch (err) {
       toast(String(err), true);
@@ -454,6 +465,11 @@ function bindEvents() {
     } catch (err) {
       toast(String(err), true);
     }
+  });
+
+  document.getElementById("drawerLaunchAdminBtn").addEventListener("click", async () => {
+    if (!state.activeDrawerId) return;
+    await handleAction("launch-admin", state.activeDrawerId);
   });
 
   document.getElementById("drawerOpenFolderBtn").addEventListener("click", async () => {

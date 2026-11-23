@@ -283,13 +283,30 @@ pub fn shell_open(target: &str) -> Result<(), String> {
     }
 }
 
-pub fn launch_exe(path: &Path) -> Result<(), String> {
+pub fn launch_exe(path: &Path, as_admin: bool) -> Result<(), String> {
     let dir = path.parent().unwrap_or_else(|| Path::new("."));
-    std::process::Command::new(path)
-        .current_dir(dir)
-        .spawn()
-        .map_err(|e| format!("Не удалось запустить {}: {e}", path.display()))?;
-    Ok(())
+    let verb_str = if as_admin { "runas" } else { "open" };
+    unsafe {
+        let verb = to_wide(verb_str);
+        let file = to_wide(&path.to_string_lossy());
+        let work_dir = to_wide(&dir.to_string_lossy());
+        let res = ShellExecuteW(
+            None,
+            PCWSTR(verb.as_ptr()),
+            PCWSTR(file.as_ptr()),
+            PCWSTR::null(),
+            PCWSTR(work_dir.as_ptr()),
+            windows::Win32::UI::WindowsAndMessaging::SW_SHOWNORMAL,
+        );
+        let code = res.0 as isize;
+        if code <= 32 {
+            if code == 5 {
+                return Err("Запуск отменён пользователем (UAC)".to_string());
+            }
+            return Err(format!("Не удалось запустить {} (код {code})", path.display()));
+        }
+        Ok(())
+    }
 }
 
 pub fn build_all_states() -> Vec<AppStateDto> {

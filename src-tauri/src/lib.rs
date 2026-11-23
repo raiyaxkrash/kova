@@ -91,12 +91,12 @@ async fn install_or_update_app(
 }
 
 #[tauri::command]
-fn launch_app(id: String) -> Result<(), String> {
+fn launch_app(id: String, as_admin: Option<bool>) -> Result<(), String> {
     let spec = find_spec(&id).ok_or_else(|| format!("Неизвестное приложение: {id}"))?;
     let cfg = load_config();
     let (path, _) = detect_install(spec, &cfg);
     let exe = path.ok_or_else(|| format!("{} не установлен", spec.name))?;
-    launch_exe(&exe)
+    launch_exe(&exe, as_admin.unwrap_or(false))
 }
 
 #[tauri::command]
