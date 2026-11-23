@@ -1,0 +1,14 @@
+{
+  "name": "kova",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Kova — единый нативный лаунчер и менеджер обновлений для Dynamic Island, Zapret2 GUI, SwiftTab и SnapShot",
+  "scripts": {
+    "tauri": "tauri",
+    "dev": "tauri dev",
+    "build": "tauri build"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2"
+  }
+}

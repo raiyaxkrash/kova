@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kova — единый лаунчер Windows-утилит</title>
+    <meta
+      name="description"
+      content="Kova — легковесный нативный лаунчер на Rust + Tauri 2 для Dynamic Island, Zapret2 GUI, SwiftTab и SnapShot. Установка, обновления и автозапуск в одном окне."
+    />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container topbar-inner">
+        <a class="brand" href="#">
+          <svg viewBox="0 0 28 28" width="24" height="24" aria-hidden="true">
+            <rect x="1" y="1" width="26" height="26" rx="7" fill="#17191F" stroke="rgba(255,255,255,0.14)" stroke-width="1.2" />
+            <rect x="7.5" y="7" width="3.2" height="14" rx="1.2" fill="#F4F1EC" />
+            <path d="M12.4 14L19.4 7.4" stroke="#E89556" stroke-width="3.2" stroke-linecap="round" />
+            <path d="M12.4 14L19.8 20.6" stroke="#D8783A" stroke-width="3.2" stroke-linecap="round" />
+          </svg>
+          <span class="brand-word">KOVA</span>
+        </a>
+
+        <nav class="nav-links">
+          <a href="#apps">Утилиты</a>
+          <a href="#why">Архитектура</a>
+          <a href="https://github.com/raiyaxkrash/kova/releases" target="_blank" rel="noreferrer">Релизы</a>
+        </nav>
+
+        <a class="btn-outline" href="https://github.com/raiyaxkrash/kova" target="_blank" rel="noreferrer">
+          GitHub ↗
+        </a>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="container hero-grid">
+          <div class="hero-copy">
+            <div class="eyebrow mono">WINDOWS 10 / 11 · RUST + TAURI 2</div>
+            <h1>Четыре нативные утилиты.<br />Один лаунчер.</h1>
+            <p class="hero-sub">
+              Kova объединяет <strong>Dynamic Island</strong>, <strong>Zapret2 GUI</strong>,
+              <strong>SwiftTab</strong> и <strong>SnapShot</strong> в одном окне: установка в 1 клик,
+              обновления напрямую с GitHub Releases и единое управление автозапуском.
+            </p>
+
+            <div class="hero-cta">
+              <a
+                class="btn-primary"
+                id="heroDownloadBtn"
+                href="https://github.com/raiyaxkrash/kova/releases"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="7 10 12 15 17 10" />
+                  <line x1="12" y1="15" x2="12" y2="3" />
+                </svg>
+                <span id="heroDownloadLabel">Скачать Kova для Windows</span>
+              </a>
+              <a class="btn-secondary" href="#apps">Смотреть утилиты</a>
+            </div>
+
+            <div class="hero-metrics">
+              <div class="metric">
+                <div class="metric-val mono" id="heroKovaVersion">v0.1.0</div>
+                <div class="metric-lbl">Версия Kova</div>
+              </div>
+              <div class="metric">
+                <div class="metric-val mono">0 МБ</div>
+                <div class="metric-lbl">Electron / Chromium</div>
+              </div>
+              <div class="metric">
+                <div class="metric-val mono">4 apps</div>
+                <div class="metric-lbl">Прямые релизы GitHub</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Interactive Desktop Window Preview -->
+          <div class="mockup-frame" aria-label="Предпросмотр интерфейса Kova">
+            <div class="mockup-bar">
+              <div class="mockup-brand">
+                <span class="dot-copper"></span>
+                <span class="mono">KOVA</span>
+                <span class="mockup-tag mono" id="mockVer">v0.1.0</span>
+              </div>
+              <div class="mockup-controls">
+                <span></span><span></span><span></span>
+              </div>
+            </div>
+            <div class="mockup-body">
+              <div class="mockup-side">
+                <div class="mockup-nav-item active">Утилиты</div>
+                <div class="mockup-nav-item">Автозапуск</div>
+                <div class="mockup-nav-item">О Kova</div>
+                <div class="mockup-stat">
+                  <span>Активно</span>
+                  <strong class="mono">4 / 4</strong>
+                </div>
+              </div>
+              <div class="mockup-grid" id="mockupGrid"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="apps">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <div class="eyebrow mono">КАТАЛОГ</div>
+              <h2>Все четыре проекта в одном пакете</h2>
+            </div>
+            <p class="section-note">
+              Версии и ссылки на скачивание подтягиваются в реальном времени из GitHub Releases.
+            </p>
+          </div>
+
+          <div class="bento-grid" id="bentoGrid"></div>
+        </div>
+      </section>
+
+      <section class="section section-border" id="why">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <div class="eyebrow mono">ИНЖЕНЕРИЯ</div>
+              <h2>Сделано без компромиссов по ресурсам</h2>
+            </div>
+          </div>
+
+          <div class="pillars-grid">
+            <div class="pillar">
+              <div class="pillar-num mono">01</div>
+              <h3>Нативный Rust + Win32</h3>
+              <p>
+                Никаких тяжёлых Electron-сборок на 150 МБ. Kova и все утилиты собраны на Rust с системным WebView2 и прямыми вызовами Win32 API.
+              </p>
+            </div>
+            <div class="pillar">
+              <div class="pillar-num mono">02</div>
+              <h3>Без сторонних серверов</h3>
+              <p>
+                Лаунчер общается напрямую с публичным GitHub API, проверяет свежие релизы и скачивает официальные артефакты прямо из репозиториев.
+              </p>
+            </div>
+            <div class="pillar">
+              <div class="pillar-num mono">03</div>
+              <h3>Единый автозапуск и трей</h3>
+              <p>
+                Включай и отключай автозапуск Windows, отслеживай запущенные процессы и обновляй все четыре инструмента из одного окна.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-inner">
+        <div class="footer-left">
+          <span class="brand-word">KOVA</span>
+          <span class="footer-sep">·</span>
+          <span>Открытый лаунчер от <a href="https://github.com/raiyaxkrash" target="_blank" rel="noreferrer">raiyaxkrash</a></span>
+        </div>
+        <div class="footer-links mono">
+          <a href="https://github.com/raiyaxkrash/dynamic-island" target="_blank" rel="noreferrer">dynamic-island</a>
+          <a href="https://github.com/raiyaxkrash/zapret2-rust" target="_blank" rel="noreferrer">zapret2-rust</a>
+          <a href="https://github.com/raiyaxkrash/swifttab" target="_blank" rel="noreferrer">swifttab</a>
+          <a href="https://github.com/raiyaxkrash/snapshot" target="_blank" rel="noreferrer">snapshot</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>

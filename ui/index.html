@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kova</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <header class="titlebar" data-tauri-drag-region>
+        <div class="brand" data-tauri-drag-region>
+          <svg class="brand-mark" viewBox="0 0 28 28" width="20" height="20" aria-hidden="true">
+            <rect x="1" y="1" width="26" height="26" rx="7" fill="#17191F" stroke="rgba(255,255,255,0.12)" stroke-width="1.2"/>
+            <rect x="7.5" y="7" width="3.2" height="14" rx="1.2" fill="#F4F1EC"/>
+            <path d="M12.4 14L19.4 7.4" stroke="#E89556" stroke-width="3.2" stroke-linecap="round"/>
+            <path d="M12.4 14L19.8 20.6" stroke="#D8783A" stroke-width="3.2" stroke-linecap="round"/>
+          </svg>
+          <span class="brand-name">KOVA</span>
+          <span class="brand-version" id="kovaVersion">v0.1.0</span>
+        </div>
+
+        <div class="titlebar-actions">
+          <button class="icon-btn" id="refreshBtn" title="Проверить релизы на GitHub">
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12a9 9 0 1 1-2.64-6.36"/>
+              <polyline points="21 3 21 9 15 9"/>
+            </svg>
+          </button>
+          <button class="icon-btn" id="minBtn" title="Свернуть">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+          </button>
+          <button class="icon-btn close-btn" id="closeBtn" title="Свернуть в трей">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <line x1="6" y1="6" x2="18" y2="18"/>
+              <line x1="18" y1="6" x2="6" y2="18"/>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <div class="workspace">
+        <aside class="sidebar">
+          <nav class="nav">
+            <button class="nav-item active" data-view="apps">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="7.5" height="7.5" rx="2"/>
+                <rect x="13.5" y="3" width="7.5" height="7.5" rx="2"/>
+                <rect x="3" y="13.5" width="7.5" height="7.5" rx="2"/>
+                <rect x="13.5" y="13.5" width="7.5" height="7.5" rx="2"/>
+              </svg>
+              <span>Утилиты</span>
+              <span class="nav-pill" id="updatesBadge" hidden>0</span>
+            </button>
+            <button class="nav-item" data-view="autostart">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+              </svg>
+              <span>Автозапуск</span>
+            </button>
+            <button class="nav-item" data-view="about">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="9"/>
+                <line x1="12" y1="16" x2="12" y2="12"/>
+                <circle cx="12" cy="8.2" r="0.6" fill="currentColor"/>
+              </svg>
+              <span>О Kova</span>
+            </button>
+          </nav>
+
+          <div class="sidebar-footer">
+            <div class="status-box">
+              <div class="status-row">
+                <span class="status-label">Активно</span>
+                <span class="status-value" id="runningSummary">0 / 4</span>
+              </div>
+              <div class="status-row">
+                <span class="status-label">Установлено</span>
+                <span class="status-value" id="installedSummary">0 / 4</span>
+              </div>
+            </div>
+            <button class="btn-secondary full-width" id="launchAllBtn">Запустить все</button>
+          </div>
+        </aside>
+
+        <main class="content">
+          <!-- View: Apps -->
+          <section class="view active" id="view-apps">
+            <div class="view-header">
+              <div>
+                <h1>Набор утилит</h1>
+                <p class="subtitle">Четыре нативных инструмента для Windows · прямые релизы с GitHub</p>
+              </div>
+              <button class="btn-accent" id="updateAllBtn" hidden>Обновить все</button>
+            </div>
+            <div class="apps-grid" id="appsGrid"></div>
+          </section>
+
+          <!-- View: Autostart -->
+          <section class="view" id="view-autostart">
+            <div class="view-header">
+              <div>
+                <h1>Автозапуск Windows</h1>
+                <p class="subtitle">Управление ключами запуска в реестре текущего пользователя</p>
+              </div>
+            </div>
+            <div class="autostart-list" id="autostartList"></div>
+          </section>
+
+          <!-- View: About -->
+          <section class="view" id="view-about">
+            <div class="view-header">
+              <div>
+                <h1>О проекте Kova</h1>
+                <p class="subtitle">Единый центр установки, обновлений и запуска утилит raiyaxkrash</p>
+              </div>
+            </div>
+
+            <div class="about-grid">
+              <div class="about-card">
+                <div class="about-label">Версия лаунчера</div>
+                <div class="about-val mono" id="aboutVersion">v0.1.0</div>
+                <div class="about-note" id="kovaUpdateNote">Проверка обновлений на GitHub...</div>
+              </div>
+              <div class="about-card">
+                <div class="about-label">Директория установки</div>
+                <div class="about-val mono small" id="kovaDirPath">%LOCALAPPDATA%\Kova</div>
+                <button class="btn-ghost small" id="openKovaDirBtn">Открыть папку</button>
+              </div>
+            </div>
+
+            <div class="about-links">
+              <button class="link-card" data-open="https://github.com/raiyaxkrash/kova">
+                <div>
+                  <div class="link-title">Репозиторий Kova на GitHub</div>
+                  <div class="link-sub">github.com/raiyaxkrash/kova</div>
+                </div>
+                <span class="arrow">↗</span>
+              </button>
+              <button class="link-card" data-open="https://raiyaxkrash.github.io/kova/">
+                <div>
+                  <div class="link-title">Официальная витрина Kova</div>
+                  <div class="link-sub">raiyaxkrash.github.io/kova</div>
+                </div>
+                <span class="arrow">↗</span>
+              </button>
+              <button class="link-card" data-open="https://github.com/raiyaxkrash">
+                <div>
+                  <div class="link-title">Профиль автора</div>
+                  <div class="link-sub">github.com/raiyaxkrash</div>
+                </div>
+                <span class="arrow">↗</span>
+              </button>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <!-- Detail Drawer -->
+    <div class="drawer-backdrop" id="drawerBackdrop" hidden></div>
+    <aside class="drawer" id="detailDrawer" aria-hidden="true">
+      <div class="drawer-header">
+        <div class="drawer-title-wrap">
+          <div class="app-icon-box" id="drawerIcon"></div>
+          <div>
+            <h2 id="drawerName">App</h2>
+            <div class="drawer-repo mono" id="drawerRepo">raiyaxkrash/repo</div>
+          </div>
+        </div>
+        <button class="icon-btn" id="drawerCloseBtn" title="Закрыть">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="6" y1="6" x2="18" y2="18"/>
+            <line x1="18" y1="6" x2="6" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="drawer-body">
+        <p class="drawer-desc" id="drawerDesc"></p>
+
+        <div class="drawer-section">
+          <div class="section-label">Возможности</div>
+          <ul class="feature-list" id="drawerFeatures"></ul>
+        </div>
+
+        <div class="drawer-section" id="drawerNotesWrap">
+          <div class="section-label">Последний релиз <span class="mono" id="drawerReleaseTag"></span></div>
+          <pre class="release-notes" id="drawerNotes"></pre>
+        </div>
+
+        <div class="drawer-section">
+          <div class="section-label">Локальный файл (.exe)</div>
+          <div class="path-row">
+            <input type="text" id="customPathInput" placeholder="C:\Path\to\app.exe" />
+            <button class="btn-secondary small" id="savePathBtn">Привязать</button>
+          </div>
+          <div class="drawer-meta-actions">
+            <button class="btn-ghost small" id="drawerOpenFolderBtn">Открыть папку</button>
+            <button class="btn-ghost small" id="drawerOpenGithubBtn">Страница на GitHub ↗</button>
+            <button class="btn-danger small" id="drawerUninstallBtn">Удалить</button>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <div class="toast-stack" id="toastStack"></div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
