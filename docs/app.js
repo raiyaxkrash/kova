@@ -28,20 +28,6 @@ const APPS = [
     icon: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5.5c0 4.5-3 8.1-7 9.5-4-1.4-7-5-7-9.5V6l7-3z"/><path d="M9.5 12.2l1.8 1.8 3.6-3.8"/></svg>`,
   },
   {
-    id: "swifttab",
-    name: "SwiftTab",
-    repo: "raiyaxkrash/swifttab",
-    category: "Окна",
-    shortcut: "Alt + Tab",
-    short: "Живые превью окон и мгновенный поиск по Alt + Space",
-    description:
-      "Легковесный переключатель окон на Rust, Tauri 2 и Win32. Живые миниатюры окон, нативные иконки, закреплённый поиск по Alt + Space и быстрое закрытие окон.",
-    features: ["Живые миниатюры", "Поиск Alt + Space", "Системный трей"],
-    running: true,
-    autostart: true,
-    icon: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="13" height="10" rx="2"/><path d="M8 16v2a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-3"/></svg>`,
-  },
-  {
     id: "snapshot",
     name: "SnapShot",
     repo: "raiyaxkrash/snapshot",

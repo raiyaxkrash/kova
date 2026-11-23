@@ -10,7 +10,6 @@
 |---|---|---|
 | **Dynamic Island** | [`raiyaxkrash/dynamic-island`](https://github.com/raiyaxkrash/dynamic-island) | Нативный Dynamic Island для Windows 10/11 на 60 FPS: медиа, громкость, полка файлов, буфер и помодоро |
 | **Zapret2 GUI** | [`raiyaxkrash/zapret2-rust`](https://github.com/raiyaxkrash/zapret2-rust) | YouTube, Discord и Telegram одной кнопкой с автоподбором стратегии и прокси для Telegram |
-| **SwiftTab** | [`raiyaxkrash/swifttab`](https://github.com/raiyaxkrash/swifttab) | Современный `Alt+Tab` переключатель окон с живыми превью и поиском по `Alt+Space` |
 | **SnapShot** | [`raiyaxkrash/snapshot`](https://github.com/raiyaxkrash/snapshot) | Скриншотер 1:1 DPI, редактор с блюром паролей, Beautify и оффлайн OCR (RU/EN) |
 
 ## Возможности Kova

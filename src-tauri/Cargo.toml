@@ -1,7 +1,7 @@
 [package]
 name = "kova"
-version = "0.1.1"
-description = "Kova — единый лаунчер для Dynamic Island, Zapret2 GUI, SwiftTab и SnapShot"
+version = "0.1.2"
+description = "Kova — единый лаунчер для Dynamic Island, Zapret2 GUI и SnapShot"
 edition = "2021"
 publish = false
 

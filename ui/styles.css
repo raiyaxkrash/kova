@@ -299,6 +299,10 @@ input:focus-visible {
   transition: border-color 140ms var(--ease);
 }
 
+.app-card:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+}
+
 .app-card:hover {
   border-color: var(--border-strong);
 }
