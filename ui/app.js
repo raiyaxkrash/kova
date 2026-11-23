@@ -15,10 +15,10 @@ const state = {
 };
 
 const APP_ICONS = {
-  "dynamic-island": `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="8" rx="4"/><circle cx="8.5" cy="12" r="1.3" fill="currentColor" stroke="none"/><line x1="12.5" y1="12" x2="16.5" y2="12"/></svg>`,
-  "zapret2-rust": `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5.5c0 4.5-3 8.1-7 9.5-4-1.4-7-5-7-9.5V6l7-3z"/><path d="M9.5 12.2l1.8 1.8 3.6-3.8"/></svg>`,
-  "swifttab": `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="13" height="10" rx="2"/><path d="M8 16v2a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-3"/></svg>`,
-  "snapshot": `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8V6a2 2 0 0 1 2-2h2"/><path d="M20 8V6a2 2 0 0 0-2-2h-2"/><path d="M4 16v2a2 2 0 0 0 2 2h2"/><path d="M20 16v2a2 2 0 0 1-2 2h-2"/><circle cx="12" cy="12" r="3"/></svg>`,
+  "dynamic-island": `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="8" rx="4"/><circle cx="8.5" cy="12" r="1.2" fill="currentColor" stroke="none"/><line x1="12.5" y1="12" x2="16.5" y2="12"/></svg>`,
+  "zapret2-rust": `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5.5c0 4.5-3 8.1-7 9.5-4-1.4-7-5-7-9.5V6l7-3z"/><path d="M9.5 12.2l1.8 1.8 3.6-3.8"/></svg>`,
+  swifttab: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="13" height="10" rx="2"/><path d="M8 16v2a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-3"/></svg>`,
+  snapshot: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8V6a2 2 0 0 1 2-2h2"/><path d="M20 8V6a2 2 0 0 0-2-2h-2"/><path d="M4 16v2a2 2 0 0 0 2 2h2"/><path d="M20 16v2a2 2 0 0 1-2 2h-2"/><circle cx="12" cy="12" r="3"/></svg>`,
 };
 
 function escapeHtml(str) {
@@ -79,7 +79,7 @@ function renderApps() {
       if (app.installed) installedCount++;
       if (updateAvail) updatesCount++;
 
-      let statusClass = "missing";
+      let statusClass = "";
       let statusLabel = "Не установлено";
       if (app.running) {
         statusClass = "running";
@@ -88,39 +88,35 @@ function renderApps() {
         statusClass = "update";
         statusLabel = "Обновление";
       } else if (app.installed) {
-        statusClass = "installed";
         statusLabel = "Установлено";
       }
 
-      let verChip = `<span class="meta-chip">Проверка...</span>`;
+      let verHtml = `<span class="meta-ver mono">Проверка</span>`;
       if (rel) {
         if (updateAvail) {
-          verChip = `<span class="meta-chip accent">v${escapeHtml(app.installedVersion)} → v${escapeHtml(rel.version)}</span>`;
+          verHtml = `<span class="meta-ver update mono">v${escapeHtml(app.installedVersion)} → v${escapeHtml(rel.version)}</span>`;
         } else if (rel.available && rel.version) {
-          verChip = `<span class="meta-chip">v${escapeHtml(rel.version)}</span>`;
+          verHtml = `<span class="meta-ver mono">v${escapeHtml(rel.version)}</span>`;
         } else if (app.installedVersion) {
-          verChip = `<span class="meta-chip">v${escapeHtml(app.installedVersion)}</span>`;
+          verHtml = `<span class="meta-ver mono">v${escapeHtml(app.installedVersion)}</span>`;
         } else {
-          verChip = `<span class="meta-chip">Скоро релиз</span>`;
+          verHtml = `<span class="meta-ver mono">Скоро релиз</span>`;
         }
       }
 
-      const sizeChip =
-        rel && rel.assetSize
-          ? `<span class="meta-chip">${formatBytes(rel.assetSize)}</span>`
-          : "";
+      const sizeText = rel && rel.assetSize ? `<span class="mono">${formatBytes(rel.assetSize)}</span>` : "";
 
       let primaryBtn = "";
       if (isBusy) {
-        primaryBtn = `<button class="btn-secondary btn-primary-grow" disabled>Загрузка...</button>`;
+        primaryBtn = `<button class="btn-secondary btn-primary-grow" disabled>Загрузка</button>`;
       } else if (app.running) {
         primaryBtn = `<button class="btn-secondary btn-primary-grow" data-action="stop" data-id="${app.id}">Остановить</button>`;
       } else if (updateAvail && rel?.downloadUrl) {
         primaryBtn = `<button class="btn-accent btn-primary-grow" data-action="install" data-id="${app.id}">Обновить до v${escapeHtml(rel.version)}</button>`;
       } else if (app.installed) {
-        primaryBtn = `<button class="btn-accent btn-primary-grow" data-action="launch" data-id="${app.id}">Запустить</button>`;
+        primaryBtn = `<button class="btn-primary btn-primary-grow" data-action="launch" data-id="${app.id}">Запустить</button>`;
       } else if (rel?.available && rel?.downloadUrl) {
-        primaryBtn = `<button class="btn-accent btn-primary-grow" data-action="install" data-id="${app.id}">Установить</button>`;
+        primaryBtn = `<button class="btn-primary btn-primary-grow" data-action="install" data-id="${app.id}">Установить</button>`;
       } else {
         primaryBtn = `<button class="btn-secondary btn-primary-grow" data-action="github" data-id="${app.id}">Открыть GitHub ↗</button>`;
       }
@@ -141,21 +137,23 @@ function renderApps() {
         <article class="app-card" data-id="${app.id}">
           <div class="card-top">
             <div class="card-identity" data-action="details" data-id="${app.id}">
-              <div class="app-icon-box" style="color:${app.accent}">${APP_ICONS[app.id] || ""}</div>
+              <div class="app-icon-box">${APP_ICONS[app.id] || ""}</div>
               <div class="card-title-group">
                 <div class="card-title">${escapeHtml(app.name)}</div>
                 <div class="card-category">${escapeHtml(app.category)}</div>
               </div>
             </div>
-            <span class="status-pill ${statusClass}">${statusLabel}</span>
+            <span class="status-text ${statusClass}"><span class="status-dot"></span>${statusLabel}</span>
           </div>
 
           <p class="card-tagline">${escapeHtml(app.tagline)}</p>
 
           <div class="card-meta">
-            ${verChip}
-            <span class="meta-chip">${escapeHtml(app.shortcut)}</span>
-            ${sizeChip}
+            <div class="meta-left">
+              ${verHtml}
+              ${sizeText ? `<span>·</span>${sizeText}` : ""}
+            </div>
+            <kbd class="keycap">${escapeHtml(app.shortcut)}</kbd>
           </div>
 
           ${progressHtml}
@@ -164,18 +162,18 @@ function renderApps() {
             ${primaryBtn}
             ${
               app.installed && !app.running && !isBusy
-                ? `<button class="btn-ghost small" data-action="launch-admin" data-id="${app.id}" title="Запустить от имени администратора">
-                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                ? `<button class="btn-ghost btn-square" data-action="launch-admin" data-id="${app.id}" title="Запустить от имени администратора" aria-label="Запустить от имени администратора">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                       <path d="M12 3l7 3v5.5c0 4.5-3 8.1-7 9.5-4-1.4-7-5-7-9.5V6l7-3z"/>
                     </svg>
                   </button>`
                 : ""
             }
-            <button class="btn-ghost small" data-action="details" data-id="${app.id}" title="Подробнее и настройки">
-              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
-                <circle cx="19" cy="12" r="1.5" fill="currentColor"/>
-                <circle cx="5" cy="12" r="1.5" fill="currentColor"/>
+            <button class="btn-ghost btn-square" data-action="details" data-id="${app.id}" title="Подробнее и настройки" aria-label="Подробнее">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                <circle cx="12" cy="12" r="1" fill="currentColor"/>
+                <circle cx="18" cy="12" r="1" fill="currentColor"/>
+                <circle cx="6" cy="12" r="1" fill="currentColor"/>
               </svg>
             </button>
           </div>
@@ -209,14 +207,14 @@ function renderAutostart() {
   const list = document.getElementById("autostartList");
   list.innerHTML = state.apps
     .map((app) => {
-      const pathText = app.exePath || "Приложение ещё не установлено";
+      const pathText = app.exePath || "Приложение не установлено";
       return `
         <div class="autostart-row">
           <div class="autostart-info">
-            <div class="app-icon-box" style="color:${app.accent}">${APP_ICONS[app.id] || ""}</div>
+            <div class="app-icon-box">${APP_ICONS[app.id] || ""}</div>
             <div>
               <div class="card-title">${escapeHtml(app.name)}</div>
-              <div class="autostart-path">${escapeHtml(pathText)}</div>
+              <div class="autostart-path mono">${escapeHtml(pathText)}</div>
             </div>
           </div>
           <label class="switch" title="${app.installed ? "Автозапуск с Windows" : "Сначала установите приложение"}">
@@ -235,7 +233,6 @@ function populateDrawer(id) {
   const rel = state.releases.get(id);
 
   const iconEl = document.getElementById("drawerIcon");
-  iconEl.style.color = app.accent;
   iconEl.innerHTML = APP_ICONS[id] || "";
 
   document.getElementById("drawerName").textContent = app.name;
@@ -300,12 +297,12 @@ async function refreshReleases(showToast = false) {
     const noteEl = document.getElementById("kovaUpdateNote");
     if (payload.kovaRelease?.available && payload.kovaRelease.version) {
       if (compareSemver(payload.kovaRelease.version, state.kovaVersion) > 0) {
-        noteEl.textContent = `Доступна новая версия Kova v${payload.kovaRelease.version} на GitHub`;
+        noteEl.textContent = `Доступна версия v${payload.kovaRelease.version} на GitHub`;
       } else {
-        noteEl.textContent = "Установлена последняя версия Kova";
+        noteEl.textContent = "Установлена актуальная версия";
       }
     } else {
-      noteEl.textContent = "Готов к публикациям на github.com/raiyaxkrash/kova";
+      noteEl.textContent = "Релизы публикуются на github.com/raiyaxkrash/kova";
     }
 
     renderApps();
@@ -514,7 +511,6 @@ async function init() {
   await refreshLocalState();
   refreshReleases(false);
 
-  // Periodic live process status poll
   setInterval(refreshLocalState, 4000);
 }
 
